@@ -54,9 +54,6 @@ final class AmazonGatewayFactory extends GatewayFactory
             'api_url' => Api::API_URL,
             'timeout' => 10,
             'omnitrade.api' => function (Config $c) {
-                if (!$this->http && !class_exists(HttpClient::class)) {
-                    throw new InvalidConfigException('The "amazon" gateway needs symfony/http-client.');
-                }
                 $tokenUrl = $c['token_url'] ?: (self::TOKEN_URLS[(string) $c['credential_version']] ?? throw new InvalidConfigException(sprintf('Unknown Creators API credential version "%s": 3.1, 3.2 or 3.3, or a token_url.', $c['credential_version'])));
 
                 return new Api($this->http ?? HttpClient::create(), (string) $c['client_id'], (string) $c['client_secret'], (string) $c['partner_tag'], (string) $c['marketplace'], $tokenUrl, (string) $c['api_url'], (int) $c['timeout']);
