@@ -40,4 +40,4 @@ See [docs/creators-api.md](docs/creators-api.md). Amazon's programme requires th
 conditions requises" near the links, and prices shown with the time they were read (at most
 24 hours old).
 
-License: LGPL-3.0-or-later.
+License: MIT since 2026-10-09; earlier versions remain published under LGPL-3.0-or-later.
