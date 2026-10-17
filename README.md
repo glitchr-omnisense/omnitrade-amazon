@@ -1,6 +1,6 @@
 # omnitrade/amazon
 
-Amazon for [glitchr/omnitrade](https://github.com/glitchr-studio/omnitrade), through the
+Amazon for [omniscient/omnitrade](https://github.com/glitchr-studio/omnitrade), through the
 **Creators API** - which replaced the Product Advertising API 5 on 2026-05-15 -: a product by
 its ASIN or its page, a search, and the affiliate link carrying the Associates partner tag.
 
@@ -8,7 +8,7 @@ its ASIN or its page, a search, and the affiliate link carrying the Associates p
 $gateway = (new AmazonGatewayFactory($http))->create(['partner_tag' => 'mysite-21']);   // $http: the application's HTTP client; none given, the factory makes its own
 ```
 
-No framework needed: the package requires `glitchr/omnitrade` and `symfony/http-client`. In a
+No framework needed: the package requires `omniscient/omnitrade` and `symfony/http-client`. In a
 Symfony application, the same through the bundle's configuration:
 
 ```yaml
