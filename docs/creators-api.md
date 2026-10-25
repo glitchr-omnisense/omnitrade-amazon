@@ -3,12 +3,12 @@ title: The Creators API
 order: 10
 ---
 
-## omnitrade/amazon: the Creators API
+# omnitrade/amazon: the Creators API
 
 What each read sends, and how an item becomes a `Product`. Installation, credentials and options:
 at the head of this manual.
 
-### Requests
+## Requests
 
 | Request | Call | |
 |---|---|---|
@@ -28,7 +28,7 @@ The token is an OAuth 2.0 client-credentials one (`grant_type`,
 `client_id`, `client_secret`, `scope: creatorsapi::default`, as JSON), kept
 in memory until a minute before it runs out (an hour).
 
-### What is mapped
+## What is mapped
 
 | Product | From |
 |---|---|
@@ -51,7 +51,7 @@ id) or the store, `taxIncluded` true, no struck-through price. A listing without
 out; an item without a title takes its ASIN as title. The images' `alt` is the title. The
 description is the features as plain text, one per line, not HTML.
 
-### Not supported, and not verified
+## Not supported, and not verified
 
 Purchases, stock, variations, browse nodes, paging a search, the "offers"
 of other sellers beyond the listings returned: not offered - Amazon's
