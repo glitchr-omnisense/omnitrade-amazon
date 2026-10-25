@@ -3,27 +3,12 @@ title: The Creators API
 order: 10
 ---
 
-# omnitrade/amazon: the Creators API
+## omnitrade/amazon: the Creators API
 
-## Installation
+What each read sends, and how an item becomes a `Product`. Installation, credentials and options:
+at the head of this manual.
 
-```sh
-composer require omnitrade/amazon symfony/http-client
-```
-
-## Options
-
-| Option | Default | |
-|---|---|---|
-| `client_id`, `client_secret` | none | the Creators API credentials (Associates Central → Tools → Creators API); without them only `affiliateLink()` |
-| `partner_tag` | none | the Associates tag (`mysite-21`): in every request and every link |
-| `marketplace` | `www.amazon.fr` | the store read; sent in the body and as the `x-marketplace` header |
-| `credential_version` | `3.2` | which token endpoint: `3.1` `api.amazon.com`, `3.2` `api.amazon.co.uk`, `3.3` `api.amazon.co.jp` (`/auth/o2/token`) |
-| `token_url` | none | another token endpoint (earlier, v2 credentials use regional ones) |
-| `api_url` | `https://creatorsapi.amazon/catalog/v1` | |
-| `timeout` | `10` | seconds |
-
-## Requests
+### Requests
 
 | Request | Call | |
 |---|---|---|
@@ -43,7 +28,7 @@ The token is an OAuth 2.0 client-credentials one (`grant_type`,
 `client_id`, `client_secret`, `scope: creatorsapi::default`, as JSON), kept
 in memory until a minute before it runs out (an hour).
 
-## What is mapped
+### What is mapped
 
 | Product | From |
 |---|---|
@@ -55,8 +40,18 @@ in memory until a minute before it runs out (an hour).
 | `media` | `images.primary.large`, `images.variants[].large` (`url`, `width`, `height`) |
 | offers | `offersV2.listings[]`: `price.money.amount` / `.currency`, `availability.type`, `merchantInfo.name` |
 | `categories` | `itemInfo.classifications.productGroup.displayValue` |
+| the variant's `barcode` | `itemInfo.externalIds.eaNs.displayValues[0]` (else `eans`) |
+| `merchant` | the store itself: `Amazon.fr` for `www.amazon.fr`, its URL `https://www.amazon.fr` |
 
-## Not supported, and not verified
+Each item is one product with one variant (its reference the ASIN, its image the first picture),
+`status` active, no stock, no options. Each listing with a price is an offer: the price from
+`money.amount` (a decimal) and `money.currency`, `available` unless `availability.type` says out
+of stock or `unavailable`, `url` the detail page, `merchant` the listing's `merchantInfo` (name,
+id) or the store, `taxIncluded` true, no struck-through price. A listing without a price is left
+out; an item without a title takes its ASIN as title. The images' `alt` is the title. The
+description is the features as plain text, one per line, not HTML.
+
+### Not supported, and not verified
 
 Purchases, stock, variations, browse nodes, paging a search, the "offers"
 of other sellers beyond the listings returned: not offered - Amazon's

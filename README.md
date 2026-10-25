@@ -35,7 +35,8 @@ Without credentials only `affiliateLink()` is offered (`supports(FetchProduct::c
 false): the tag alone writes the link, and the API is opened by Amazon only to accounts with
 qualified sales. Nothing is bought here: no API lets a site buy for someone.
 
-See [docs/creators-api.md](docs/creators-api.md). Amazon's programme requires the mention
+See the manual, [docs/index.md](docs/index.md) (options, behaviour, errors, what is verified), and
+[docs/creators-api.md](docs/creators-api.md) for what each read sends and maps. Amazon's programme requires the mention
 "En tant que Partenaire Amazon, je réalise un bénéfice sur les achats remplissant les
 conditions requises" near the links, and prices shown with the time they were read (at most
 24 hours old).
