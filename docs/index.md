@@ -1,6 +1,6 @@
 # omnitrade/amazon
 
-Amazon for [omniscient/omnitrade](https://github.com/glitchr-studio/omnitrade), through the
+Amazon for [omnisense/omnitrade](https://github.com/glitchr-omnisense/omnitrade), through the
 **Creators API** - which replaced the Product Advertising API 5 on 2026-05-15 -: a product by its
 ASIN or its page, a search, and the affiliate link carrying the Associates partner tag. Nothing
 is bought here: no API lets a site buy for someone.
@@ -20,7 +20,7 @@ There is no sandbox: the API answers an account's real catalogue.
 composer require omnitrade/amazon
 ```
 
-Requires PHP 8.2, `omniscient/omnitrade` (1.x) and `symfony/http-client` (6.4, 7 or 8). In a
+Requires PHP 8.2, `omnisense/omnitrade` (1.x) and `symfony/http-client` (6.4, 7 or 8). In a
 Symfony application with `Omnitrade\Bridge\Symfony\OmnitradeBundle`, the factory is registered as
 soon as the package is installed.
 
@@ -158,7 +158,7 @@ POST https://api.amazon.co.uk/auth/o2/token
 POST https://creatorsapi.amazon/catalog/v1/getItems
 ```
 
-(run on 2026-10-25 in omniscient/omnitrade's harness image, PHP 8.4; with `HttpClient::create()`
+(run on 2026-10-25 in omnisense/omnitrade's harness image, PHP 8.4; with `HttpClient::create()`
 and an eligible account's credentials the same lines read the real item.)
 
 The programme's terms ask for a mention near the links ("En tant que Partenaire Amazon, je
