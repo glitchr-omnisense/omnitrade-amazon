@@ -175,7 +175,7 @@ Every failure is an `Omnitrade\Exception\ProviderException` whose `provider` is 
   its `code`, else the HTTP status;
 - a body that is not JSON: `The Creators API answered HTTP <status> with a body that is not
   JSON.`; a network failure: `The Creators API did not answer: ...` (`The token endpoint did not
-  answer: ...` for the token), the exception as `previous`;
+  answer: ...` for the token), a copy of the HTTP client's exception as `previous`;
 - no token: Amazon's `error_description` or `error` (`No token (HTTP <status>).` when it says
   nothing), `providerCode` its `error` or the status;
 - `query_required` for a search without a query; `no_credentials` when the API is reached without
@@ -186,6 +186,12 @@ An unknown `credential_version` without `token_url` is an `InvalidConfigExceptio
 gateway is built, even for a gateway that only writes links. Payments, `FetchOrder`,
 `FetchInventory` and `Notify` raise `RequestNotSupportedException` before any call, and so do the
 reads without credentials.
+
+No failure carries the Creators API's client secret and the token: a network failure's message has
+them masked as `***` (the key parameters of a URL too), its previous is a copy of the HTTP client's
+exception (the same class and code, without its request), and no trace of the chain keeps its
+arguments, where the request's options stood ([No secret in a
+failure](https://github.com/glitchr-omnisense/omnitrade/blob/1.x/docs/errors.md#no-secret-in-a-failure)).
 
 ## Verified, and not
 

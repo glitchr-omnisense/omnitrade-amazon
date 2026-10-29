@@ -3,6 +3,7 @@
 namespace Omnitrade\Amazon;
 
 use Omnitrade\Exception\ProviderException;
+use Omnitrade\Http\Redaction;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface as HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -96,14 +97,16 @@ final class Api
             $status = $response->getStatusCode();
             $data = json_decode($response->getContent(false), true);
         } catch (HttpExceptionInterface $e) {
-            throw new ProviderException('amazon', 'The Creators API did not answer: '.$e->getMessage(), null, $e);
+            $secrets = $this->secrets();
+
+            throw Redaction::withoutArguments(new ProviderException('amazon', 'The Creators API did not answer: '.Redaction::text($e->getMessage(), $secrets), null, Redaction::copy($e, $secrets)));
         }
         if (!\is_array($data)) {
-            throw new ProviderException('amazon', sprintf('The Creators API answered HTTP %d with a body that is not JSON.', $status));
+            throw Redaction::withoutArguments(new ProviderException('amazon', sprintf('The Creators API answered HTTP %d with a body that is not JSON.', $status)));
         }
         if ($status >= 400) {
             $error = $data['errors'][0] ?? $data;
-            throw new ProviderException('amazon', (string) ($error['message'] ?? $error['Message'] ?? sprintf('HTTP %d', $status)), isset($error['code']) ? (string) $error['code'] : (string) $status);
+            throw Redaction::withoutArguments(new ProviderException('amazon', (string) ($error['message'] ?? $error['Message'] ?? sprintf('HTTP %d', $status)), isset($error['code']) ? (string) $error['code'] : (string) $status));
         }
 
         return $data;
@@ -115,7 +118,7 @@ final class Api
             return $this->token;
         }
         if ('' === $this->clientId || '' === $this->clientSecret) {
-            throw new ProviderException('amazon', 'No Creators API credentials (client_id, client_secret).', 'no_credentials');
+            throw Redaction::withoutArguments(new ProviderException('amazon', 'No Creators API credentials (client_id, client_secret).', 'no_credentials'));
         }
         try {
             $response = $this->http->request('POST', $this->tokenUrl, [
@@ -126,14 +129,26 @@ final class Api
             $data = json_decode($response->getContent(false), true);
             $status = $response->getStatusCode();
         } catch (HttpExceptionInterface $e) {
-            throw new ProviderException('amazon', 'The token endpoint did not answer: '.$e->getMessage(), null, $e);
+            $secrets = $this->secrets();
+
+            throw Redaction::withoutArguments(new ProviderException('amazon', 'The token endpoint did not answer: '.Redaction::text($e->getMessage(), $secrets), null, Redaction::copy($e, $secrets)));
         }
         if ($status >= 400 || !\is_string($data['access_token'] ?? null)) {
-            throw new ProviderException('amazon', (string) ($data['error_description'] ?? $data['error'] ?? sprintf('No token (HTTP %d).', $status)), (string) ($data['error'] ?? $status));
+            throw Redaction::withoutArguments(new ProviderException('amazon', (string) ($data['error_description'] ?? $data['error'] ?? sprintf('No token (HTTP %d).', $status)), (string) ($data['error'] ?? $status)));
         }
         $this->token = $data['access_token'];
         $this->tokenExpires = time() + (int) ($data['expires_in'] ?? 3600);
 
         return $this->token;
+    }
+
+    /**
+     * What a failure must not carry: the credentials and the token.
+     *
+     * @return list<string>
+     */
+    private function secrets(string ...$more): array
+    {
+        return [$this->clientSecret, (string) $this->token, ...$more];
     }
 }
