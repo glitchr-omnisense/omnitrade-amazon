@@ -58,6 +58,7 @@ final class AmazonGatewayTest extends TestCase
         self::assertSame('B0C1234567', $product->reference);
         self::assertSame('Tour de lit bébé en coton', $product->title);
         self::assertSame('Jollein', $product->brand);
+        self::assertSame('<ul><li>Coton bio</li><li>Lavable à 30°</li></ul>', $product->description, 'HTML, as the contract has it: the features as a list');
         self::assertSame(3499, $product->price()->amount);
         self::assertSame('Amazon.fr', $product->variants[0]->offer()->merchant->name);
         self::assertSame('https://m.media-amazon.com/images/I/1.jpg', $product->media[0]->url);

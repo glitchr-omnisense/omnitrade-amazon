@@ -35,7 +35,7 @@ in memory until a minute before it runs out (an hour).
 | `reference`, `handle`, the variant's `sku` | `asin` |
 | `title` | `itemInfo.title.displayValue` |
 | `brand` | `itemInfo.byLineInfo.brand.displayValue` (else `manufacturer`) |
-| `description` | `itemInfo.features.displayValues`, one per line |
+| `description` | `itemInfo.features.displayValues`, as an HTML list (`<ul><li>`, each escaped) |
 | `url` | `detailPageURL` (it carries the tag) |
 | `media` | `images.primary.large`, `images.variants[].large` (`url`, `width`, `height`) |
 | offers | `offersV2.listings[]`: `price.money.amount` / `.currency`, `availability.type`, `merchantInfo.name` |
@@ -49,7 +49,7 @@ Each item is one product with one variant (its reference the ASIN, its image the
 of stock or `unavailable`, `url` the detail page, `merchant` the listing's `merchantInfo` (name,
 id) or the store, `taxIncluded` true, no struck-through price. A listing without a price is left
 out; an item without a title takes its ASIN as title. The images' `alt` is the title. The
-description is the features as plain text, one per line, not HTML.
+description is HTML, as the contract has it: the features as a list, each one escaped.
 
 ## Not supported, and not verified
 

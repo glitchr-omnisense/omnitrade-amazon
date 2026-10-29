@@ -141,7 +141,7 @@ var_dump($links->affiliateLink('https://amzn.eu/d/abc123'));
 $amazon = (new AmazonGatewayFactory($http))->create(['partner_tag' => 'mysite-21', 'client_id' => 'not_a_real_id', 'client_secret' => 'not_a_real_secret']);
 $product = $amazon->fetchProduct('https://www.amazon.fr/dp/B0C1234567');
 printf("%s %s by %s, %s from %s, %s\n", $product->reference, $product->title, $product->brand, $product->price(), $product->variants[0]->offer()->merchant->name, implode(' / ', $product->categories));
-echo str_replace("\n", ' | ', $product->description), "\n", $product->url, "\n";
+echo $product->description, "\n", $product->url, "\n";
 echo implode("\n", $sent), "\n";
 ```
 
@@ -152,7 +152,7 @@ https://www.amazon.fr/dp/B0C1234567?tag=mysite-21
 https://www.amazon.fr/dp/B0C1234567?tag=other-21
 NULL
 B0C1234567 Tour de lit bébé en coton by Jollein, 34.99 EUR from Amazon.fr, Baby Product
-Coton bio | Lavable à 30°
+<ul><li>Coton bio</li><li>Lavable à 30°</li></ul>
 https://www.amazon.fr/dp/B0C1234567?tag=mysite-21
 POST https://api.amazon.co.uk/auth/o2/token
 POST https://creatorsapi.amazon/catalog/v1/getItems

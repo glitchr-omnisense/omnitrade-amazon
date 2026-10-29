@@ -77,7 +77,8 @@ final class Items
             provider: 'amazon',
             reference: $asin,
             title: $title,
-            description: $features ? implode("\n", $features) : null,
+            // HTML, as Product::$description has it: the features (text) as a list.
+            description: $features ? '<ul>'.implode('', array_map(static fn (string $feature): string => '<li>'.htmlspecialchars($feature, \ENT_QUOTES | \ENT_SUBSTITUTE | \ENT_HTML5, 'UTF-8').'</li>', $features)).'</ul>' : null,
             handle: $asin,
             brand: \is_string($brand) ? $brand : null,
             url: $url,
