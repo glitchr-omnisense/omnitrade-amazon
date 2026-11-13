@@ -4,6 +4,32 @@ Amazon for [omnisense/omnitrade](https://github.com/glitchr-omnisense/omnitrade)
 **Creators API** - which replaced the Product Advertising API 5 on 2026-05-15 -: a product by
 its ASIN or its page, a search, and the affiliate link carrying the Associates partner tag.
 
+## Install and a first call
+
+```sh
+composer require omnitrade/amazon
+```
+
+No account and no request: an affiliate link is built locally.
+
+```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Omnitrade\Amazon\AmazonGatewayFactory;
+
+// The affiliate link needs only your Associates tag: no API credentials, no request.
+$gateway = (new AmazonGatewayFactory())->create(['partner_tag' => 'yourtag-21']);
+
+echo $gateway->affiliateLink('https://www.amazon.fr/Some-Product/dp/B0C1234567/ref=x?psc=1'), "\n";   // https://www.amazon.fr/dp/B0C1234567?tag=yourtag-21
+```
+
+Products (`fetchProduct()`, `fetchProducts()`) need Amazon Creators API credentials (below); the
+link needs only your Associates tag.
+
+## Configuration
+
 ```php
 $gateway = (new AmazonGatewayFactory($http))->create(['partner_tag' => 'mysite-21']);   // $http: the application's HTTP client; none given, the factory makes its own
 ```
